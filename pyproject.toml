@@ -6,24 +6,9 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "anthropic>=0.116.0",
-    "dotenv>=0.9.9",
-    "fastapi>=0.139.0",
-    "faster-whisper>=1.2.1",
-    "kokoro-onnx>=0.5.0",
-    "pipecat-ai>=1.4.0",
-    # daily-python (pulled in by pipecat-ai's "daily" extra) only ships Linux
-    # and macOS wheels - there is no Windows build. Marked platform-conditional
-    # so `uv sync`/`pip install` still succeeds on Windows dev machines; the
-    # voice bot subprocess itself can only run where this resolves (Streamlit
-    # Community Cloud's containers are Linux, so it installs fine there).
-    "daily-python>=0.29.0,<1; sys_platform != 'win32'",
-    "pipecat-ai-prebuilt>=1.0.3",
     "pymongo>=4.17.0",
-    "soundfile>=0.14.0",
     # st.pdf's viewer - PDFs can't be shown via st.iframe: Chrome refuses to
     # render its PDF viewer inside a sandboxed iframe (which st.iframe always
     # uses), regardless of src/srcdoc/local-file details.
     "streamlit[pdf]>=1.58.0",
-    "websockets>=16.0",
-    "loguru>=0.7.3",
 ]

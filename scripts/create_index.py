@@ -1,10 +1,13 @@
 from llama_index.core import SimpleDirectoryReader, VectorStoreIndex
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+import sys
 
-# Load the environment variables
-load_dotenv()
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from utils.config import get_secret
+
+# llama_index's OpenAI embedding reads the key from this env var
+os.environ["OPENAI_API_KEY"] = get_secret("OPENAI_API_KEY")
 
 # Find the files
 input_files = []

@@ -1,21 +1,9 @@
 # openai==1.55.3
 openai==2.22.0
 pymongo>=4.7
-python-dotenv
 # st.pdf's viewer - PDFs can't be shown via st.iframe: Chrome refuses to
 # render its PDF viewer inside a sandboxed iframe (which st.iframe always
 # uses), regardless of src/srcdoc/local-file details.
 streamlit[pdf]>=1.40.2
 llama-index==0.14.15
 anthropic>=0.116.0
-pipecat-ai>=1.4.0
-# daily-python has no Windows wheel (Linux/macOS only); skip it on Windows dev
-# machines so this file still installs there. Streamlit Community Cloud's
-# containers are Linux, so it installs normally on the deployed app.
-daily-python>=0.29.0,<1; sys_platform != "win32"
-pipecat-ai-prebuilt>=1.0.3
-faster-whisper>=1.2.1
-kokoro-onnx>=0.4.7
-loguru>=0.7.2
-soundfile>=0.14.0
-websockets>=16.0

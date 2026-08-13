@@ -2,10 +2,11 @@ import streamlit as st
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from utils.voice_bot_launcher import finish_voice_handover
+from utils.config import get_mongo_settings
+from utils.realtime_voice import finish_voice_handover
 
 def render_timer_panel() -> None:
-    if st.session_state.supervisor_handover_finished:
+    if st.session_state.patient_interaction_finished:
         st.markdown("#### Completed")
         return
 
@@ -18,19 +19,18 @@ def render_timer_panel() -> None:
     st.markdown(f"### ⏱️ {remaining} seconds")
 
     if st.session_state.conversation_active and remaining <= 0:
-        finish_voice_handover(stage="supervisor_handover", trigger="timer")
+        finish_voice_handover(stage="patient_interaction", trigger="timer")
         st.rerun()
 
 
 def enforce_max_duration(stage: str, started_at_utc, max_seconds: float) -> None:
     """End a voice bot session once it's been active for max_seconds - no UI shown.
 
-    Unlike render_timer_panel (supervisor_handover's visible countdown, which
-    also enforces its own limit), this is for stages that need a hard cap on
-    usage but shouldn't display a timer to the student. Call this on every
-    rerun while the conversation is active (the caller is responsible for
-    triggering those reruns - see the commented-out rerun loop pattern in
-    pages/2_2._Supervisor_Handover_-_GPT.py).
+    Unlike render_timer_panel (the visible countdown, which also enforces its
+    own limit), this is for stages that need a hard cap on usage but
+    shouldn't display a timer to the student. Call this on every rerun while
+    the conversation is active (the caller is responsible for triggering
+    those reruns).
     """
     if not st.session_state.conversation_active or started_at_utc is None:
         return
@@ -130,12 +130,6 @@ def initialise_streamlit_session_state() -> None:
 
         st.session_state["patient_interaction_prompt"] = patient_interaction_prompt
         
-    if "supervisor_handover_prompt" not in st.session_state: 
-        with open("./prompts/supervisor_handover_prompt.txt", "r", encoding="utf-8") as file:
-            supervisor_handover_prompt = file.read()
-
-        st.session_state["supervisor_handover_prompt"] = supervisor_handover_prompt
-        
     if "feedback_prompt" not in st.session_state: 
         with open("./prompts/feedback_prompt.txt", "r", encoding="utf-8") as file:
             feedback_prompt = file.read()
@@ -156,20 +150,16 @@ def initialise_streamlit_session_state() -> None:
     if "patient_interaction_chat_history" not in st.session_state:
         st.session_state["patient_interaction_chat_history"] = []
         
-    if "supervisor_handover_chat_history" not in st.session_state:
-        st.session_state["supervisor_handover_chat_history"] = []
-        
     if "feedback_chat_history" not in st.session_state:
         st.session_state["feedback_chat_history"] = []
 
     if "response_counter" not in st.session_state:
         st.session_state["response_counter"] = 0
 
-    if "mongodb_uri" not in st.session_state:
-        st.session_state["mongodb_uri"] = st.secrets["MONGODB_CONNECTION_STRING"]
-
-    if "mongodb_database_name" not in st.session_state:
-        st.session_state["mongodb_database_name"] = st.secrets["MONGODB_DATABASE_NAME"]
+    if "mongodb_uri" not in st.session_state or "mongodb_database_name" not in st.session_state:
+        connection_string, database_name = get_mongo_settings()
+        st.session_state["mongodb_uri"] = connection_string
+        st.session_state["mongodb_database_name"] = database_name
 
     if "patient_interaction_max_time_reached" not in st.session_state:
         st.session_state["patient_interaction_max_time_reached"] = False
@@ -177,17 +167,11 @@ def initialise_streamlit_session_state() -> None:
     if "patient_interaction_finished" not in st.session_state:
         st.session_state["patient_interaction_finished"] = False
 
-    if "supervisor_handover_finished" not in st.session_state:
-        st.session_state["supervisor_handover_finished"] = False
-
     if "session_id" not in st.session_state:
         st.session_state["session_id"] = None
 
     if "patient_transcript_id" not in st.session_state:
         st.session_state["patient_transcript_id"] = None
-
-    if "supervisor_transcript_id" not in st.session_state:
-        st.session_state["supervisor_transcript_id"] = None
 
     if "user_identifier" not in st.session_state:
         st.session_state["user_identifier"] = ""

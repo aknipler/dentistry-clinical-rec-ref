@@ -2,9 +2,13 @@ import pandas as pd
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 import os
+import sys
 from datetime import datetime
 import logging
-from dotenv import load_dotenv
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from utils.config import get_mongo_settings
 
 # Setup logging
 logging.basicConfig(
@@ -31,7 +35,7 @@ def load_identifiers(csv_path, connection_string, database_name):
         client = get_mongo_client(connection_string)
         if(input("Is the MongoDB Database name '" + database_name + "' correct?").strip() == ("yes" or "y" or "Y" or "Yes")):
             exit()
-        db = database_name
+        db = client[database_name]
         collection = db.valid_identifiers
 
         # Clear existing identifiers if needed
@@ -64,16 +68,7 @@ def load_identifiers(csv_path, connection_string, database_name):
             client.close()
 
 if __name__ == "__main__":
-    # Load environment variables
-    load_dotenv()
-    
-    # Get MongoDB connection string
-    connection_string = os.getenv("MONGODB_CONNECTION_STRING")
-    database_name = os.getenv("MONGODB_DATABASE_NAME")
-    if not connection_string:
-        raise ValueError("MONGODB_CONNECTION_STRING not found in environment variables")
-    if not database_name:
-        raise ValueError("MONGODB_DATABASE_NAME not found in environment variables")
+    connection_string, database_name = get_mongo_settings()
 
     # Get CSV path from command line argument or use default
     csv_path = input("Enter path to CSV file: ").strip()
