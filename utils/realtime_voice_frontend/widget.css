@@ -1,0 +1,39 @@
+.realtime-voice {
+  font-family: var(--st-font);
+  color: var(--st-text-color);
+}
+
+.status {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.controls button {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.9rem;
+  margin-right: 0.5rem;
+  border-radius: var(--st-base-radius);
+  border: 1px solid var(--st-border-color);
+  background: var(--st-primary-color);
+  color: white;
+  cursor: pointer;
+}
+
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: default;
+  background: var(--st-secondary-background-color);
+  color: var(--st-text-color);
+}
+
+.transcript {
+  margin-top: 0.75rem;
+  max-height: 260px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.transcript p {
+  margin: 0.25rem 0;
+}
