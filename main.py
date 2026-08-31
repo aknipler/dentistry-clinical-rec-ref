@@ -1,5 +1,5 @@
 def main():
-    print("Hello from dentistry-3-stage-activity!")
+    print("Hello from dentistry-clinical-rec-ref!")
 
 
 if __name__ == "__main__":

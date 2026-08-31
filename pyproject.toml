@@ -1,11 +1,12 @@
 [project]
-name = "dentistry-3-stage-activity"
+name = "dentistry-clin-rec-ref-bot"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "anthropic>=0.116.0",
+    "openai>=3.6.0",
     "pymongo>=4.17.0",
     # st.pdf's viewer - PDFs can't be shown via st.iframe: Chrome refuses to
     # render its PDF viewer inside a sandboxed iframe (which st.iframe always

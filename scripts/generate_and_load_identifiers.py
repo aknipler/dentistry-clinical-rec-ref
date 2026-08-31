@@ -31,9 +31,9 @@ def generate_identifier(row, salt, prefix):
             combined += str(value)
     combined += salt
     
-    # Create a hash and take first 8 characters
+    # Create a hash and take first 4 characters
     hash_object = hashlib.sha256(combined.encode())
-    return f"{prefix}{hash_object.hexdigest()[:8].upper()}"
+    return f"{prefix}{hash_object.hexdigest()[:4].upper()}"
 
 def process_and_load_identifiers(input_csv_path, connection_string, database_name):
     """
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     connection_string, database_name = get_mongo_settings()
 
     # Get CSV path
-    csv_path = input("Enter path to CSV file containing student information: ").strip()
+    csv_path = input("Enter path to CSV file containing student information (or leave blank to generate CSV file): ").strip()
     if not csv_path:
         num_identifiers = input("This process will generate a CSV to make identifiers. How many identifiers would you like? (Leave blank to cancel) ").strip()
         if int(num_identifiers):
