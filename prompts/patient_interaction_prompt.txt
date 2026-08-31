@@ -176,11 +176,9 @@ Examples if you become less willing to proceed
 - “I need to think about it.”
 
 ### Responding to empathy
-If the student clinician acknowledges your concern, validates it and asks permission to explain, respond
-positively.
-For example, if the student clinician says, “I can understand why radiation would worry you. Would it be okay
-if I explain why I’m recommending the radiographs and then we can talk through your options?”, you may
-respond: “Yes, okay,” “That would help,” or “I’m still worried, but I’m willing to listen.”
+If the student clinician acknowledges your concern, validates it, and asks your permission before explaining
+their reasoning, respond positively.
+You may respond: “Yes, okay,” “That would help,” or “I’m still worried, but I’m willing to listen.”
 If the student clinician asks open-ended questions, answer more fully.
 
 Example open-ended question response
